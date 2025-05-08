@@ -1,3 +1,30 @@
+🌐 สำหรับประชาชน (User Interface)
+หน้าเข้าสู่ระบบ (Login Page) - รองรับการเข้าสู่ระบบผ่านบัญชีผู้ใช้ (Email/Password) หรือระบบ Single Sign-On (SSO)
+
+หน้ารับแจ้งปัญหา (Report Issue Page) - ฟอร์มให้ประชาชนกรอกข้อมูลปัญหา เช่น:
+
+-ประเภทปัญหา (ธุรกรรมอิเล็กทรอนิกส์, ความเป็นส่วนตัว, ฯลฯ)
+
+-รายละเอียดปัญหา
+
+-อัปโหลดไฟล์หลักฐาน (ถ้ามี)
+
+หน้าติดตามสถานะปัญหา (Issue Tracking Page) - ประชาชนสามารถตรวจสอบสถานะการดำเนินการของปัญหาที่แจ้งได้
+
+หน้าโปรไฟล์ผู้ใช้ (User Profile Page) - ดูข้อมูลส่วนบุคคล แก้ไขข้อมูล หรือเปลี่ยนรหัสผ่าน
+
+👨‍💼 สำหรับเจ้าหน้าที่ (Admin/Officer Interface)
+หน้าเข้าสู่ระบบเจ้าหน้าที่ (Login Page)
+
+หน้าจัดการปัญหาที่แจ้ง (Issue Management Page) - เจ้าหน้าที่สามารถดูรายการปัญหาทั้งหมด พร้อมฟิลเตอร์ตามสถานะ
+
+หน้ารายละเอียดปัญหา (Issue Details Page) - ตรวจสอบรายละเอียดปัญหาที่แจ้ง และอัปเดตสถานะ
+
+หน้าจัดการผู้ใช้งาน (User Management Page) - เพิ่ม ลบ หรือแก้ไขข้อมูลผู้ใช้งาน (Admin/Officer/User)
+
+หน้ารายงานสถิติ (Report Page) - สรุปจำนวนปัญหาที่รับแจ้ง การแก้ไขที่สำเร็จ และปัญหาที่รอดำเนินการ
+
+
 - login
     - รองรับผู้ใช้ทั้งประชาชนและเจ้าหน้าที่
     - ใช้ระบบยืนยันตัวตนด้วย JWT (JSON Web Token)
@@ -20,3 +47,32 @@
     - รายงานจำนวนปัญหาที่รับแจ้ง
     - รายงานจำนวนปัญหาที่แก้ไขแล้ว/รอดำเนินการ
     - ประสิทธิภาพการทำงานของเจ้าหน้าที่
+
+
+3. ฐานข้อมูล (Database)
+🔹 ตาราง Users
+id, username, password, firstname, lastname, email, phone, role (user, officer, admin)
+
+🔹 ตาราง Issues
+id, user_id, issue_type, description, status (open, in-progress, resolved, closed), created_at, updated_at
+
+🔹 ตาราง Issue_Attachments
+id, issue_id, file_path, uploaded_at
+
+🔹 ตาราง Issue_Logs (สำหรับบันทึกประวัติการดำเนินการ)
+id, issue_id, action, officer_id, timestamp
+
+🔹 ตาราง Notifications
+id, user_id, message, read_status, created_at
+
+เทคโนโลยีที่ใช้
+Frontend: Angular (สำหรับประชาชนและเจ้าหน้าที่)
+
+Backend: Node.js (Express Nodemon)
+
+Database: MySQL หรือ PostgreSQL
+
+Authentication: JWT (JSON Web Token) หรือ OAuth 2.0
+
+Storage: Cloud Storage (เช่น AWS S3) สำหรับไฟล์แนบ
+

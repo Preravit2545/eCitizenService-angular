@@ -1,34 +1,31 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
+  imports: [ReactiveFormsModule, CommonModule],
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent { 
   loginForm: FormGroup;
+  errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  onLogin() {
+  onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      // Mock authentication (replace with real authentication logic)
-      if (email === 'admin@example.com' && password === 'password') {
-        this.router.navigate(['/dashboard']);
-        console.log('Login successful!');
-      } else {
-        alert('Invalid credentials');
-      }
+      console.log('Login attempt:', email, password);
+      // TODO: Implement authentication logic
+    } else {
+      this.errorMessage = 'โปรดกรอกข้อมูลให้ถูกต้อง';
     }
   }
 }
-
