@@ -37,7 +37,13 @@ app.post('/api/auth/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.json({ message: 'เข้าสู่ระบบสำเร็จ', token });
+    const decodedToken = jwt.decode(token);
+    res.json({ 
+      message: 'เข้าสู่ระบบสำเร็จ', 
+      token, 
+      expiresAt: decodedToken.exp 
+    });
+    
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'ข้อผิดพลาดของเซิร์ฟเวอร์' });
