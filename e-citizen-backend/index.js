@@ -32,11 +32,11 @@ app.post('/api/auth/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: 'รหัสผ่านไม่ถูกต้อง' });
 
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      { id: user.id, role: user.role, firstname: user.firstname, lastname: user.lastname },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
-
+    
     const decodedToken = jwt.decode(token);
     res.json({ 
       message: 'เข้าสู่ระบบสำเร็จ', 
