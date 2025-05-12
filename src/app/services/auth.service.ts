@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,13 +27,12 @@ export class AuthService {
     });
   }
 
-  
+
   isTokenExpired(token: string): boolean {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const currentTime = Math.floor(Date.now() / 1000); // เวลาปัจจุบันในวินาที
     return payload.exp < currentTime;
   }
-
 
   getToken(): string | null {
     const token = localStorage.getItem('token');
