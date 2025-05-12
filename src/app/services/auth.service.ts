@@ -44,6 +44,10 @@ export class AuthService {
     return token;
   }
 
+  register(user: { firstname: string; lastname: string; email: string; password: string }): Observable<any> {
+    return this.http.post('http://localhost:4000/api/auth/register', user);
+  }
+
   logout(): void {
     localStorage.removeItem('token'); // ลบ token เมื่อออกจากระบบ
   }

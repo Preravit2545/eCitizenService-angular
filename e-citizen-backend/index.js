@@ -18,6 +18,30 @@ const pool = new Pool({
   port: process.env.DB_PORT
 });
 
+// Register Route
+app.post('/api/auth/register', async (req, res) => {
+  const { firstname, lastname, email, username, password } = req.body;
+
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (result.rows.length > 0) {
+      return res.status(400).json({ message: 'อีเมลนี้ถูกใช้งานแล้ว' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await pool.query(
+      'INSERT INTO users (firstname, lastname, email, username, password, role) VALUES ($1, $2, $3, $4, $5,$6)',
+      [firstname, lastname, email, username, hashedPassword, 'user']
+    );
+
+    res.status(201).json({ message: 'ลงทะเบียนสำเร็จ' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'ข้อผิดพลาดของเซิร์ฟเวอร์' });
+  }
+});
+
 // Login Route
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;

@@ -20,7 +20,11 @@ export class LoginComponent {
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
-  
+
+  navigateToRegister() {
+    this.router.navigate(['/register']);
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
