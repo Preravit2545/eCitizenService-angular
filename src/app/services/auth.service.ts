@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:4000/api/auth/login'; // URL ของ API
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
     return new Observable((observer) => {
@@ -27,8 +27,22 @@ export class AuthService {
     });
   }
 
+  
+  isTokenExpired(token: string): boolean {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const currentTime = Math.floor(Date.now() / 1000); // เวลาปัจจุบันในวินาที
+    return payload.exp < currentTime;
+  }
+
+
   getToken(): string | null {
-    return localStorage.getItem('token'); // ดึง token จาก localStorage
+    const token = localStorage.getItem('token');
+    // ตรวจสอบว่า token หมดอายุหรือไม่
+    if (token && this.isTokenExpired(token)) {
+      this.logout();
+      return null;
+    }
+    return token;
   }
 
   logout(): void {

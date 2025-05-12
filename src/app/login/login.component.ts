@@ -24,7 +24,6 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      console.log('Sending login request with:', { email, password });
       this.http.post<any>('http://localhost:4000/api/auth/login', { email, password }).subscribe({
         next: (res) => {
           localStorage.setItem('token', res.token);
